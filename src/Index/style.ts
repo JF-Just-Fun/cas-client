@@ -1,35 +1,28 @@
 import styled from 'styled-components';
+import wallhaven from '../assets/wallhaven.png';
+import wallhaven1 from '../assets/wallhaven1.jpg';
 
-export const Container = styled.div`
+type ContainerType = {
+  background?: string;
+};
+export const Container = styled.div<ContainerType>`
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-export const Card = styled.div`
-  position: relative;
-  width: 768px;
-  height: 480px;
-  background-color: white;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  overflow: hidden;
-  &.active {
-    & .sign-up-container {
-      transform: translateX(100%);
-      z-index: 5;
-    }
-    & .sign-in-container {
-      transform: translateX(100%);
-    }
-    & .overlay_container {
-      transform: translateX(-100%);
-    }
-    & .overlay {
-      transform: translateX(50%);
-    }
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    filter: blur(2px) saturate(90%) opacity(90%);
+    background-image: url(${wallhaven1});
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 `;
 
@@ -38,8 +31,19 @@ export const FormContainer = styled.div`
   top: 0;
   width: 50%;
   height: 100%;
-  background-color: white;
-  transition: all 0.6s ease-in-out;
+  background-color: #f8f9fc;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease-in-out;
+  &#sign-in-container {
+    transform: rotateY(-180deg);
+    left: 50%;
+    transform-origin: left;
+  }
+  &#sign-up-container {
+    transform: rotateY(0);
+    transform-origin: right;
+  }
 `;
 
 export const Form = styled.div`
@@ -68,6 +72,7 @@ export const ForgetPassword = styled.a`
   color: #bbb;
   text-transform: capitalize;
   font-size: 12px;
+  border-bottom: 2px solid transparent;
   &:hover {
     color: lightslategray;
     border-bottom: 2px solid #ff4b2b;
@@ -75,7 +80,7 @@ export const ForgetPassword = styled.a`
 `;
 
 export const Button = styled.button`
-  background: #ff4b2b;
+  background: #000000;
   padding: 10px 50px;
   border: 1px solid transparent;
   border-radius: 20px;
@@ -84,7 +89,9 @@ export const Button = styled.button`
   margin-top: 10px;
   outline: none;
   transition: transform 80;
-  &:active {
+  cursor: pointer;
+  &:active,
+  &:hover {
     transform: scale(0.95);
   }
 `;
@@ -92,9 +99,8 @@ export const Button = styled.button`
 export const OverlayContainer = styled.div`
   position: absolute;
   top: 0;
-  width: 50%;
+  width: 100%;
   height: 100%;
-  z-index: 100;
   right: 0;
   overflow: hidden;
   transition: all 0.6s ease-in-out;
@@ -102,16 +108,36 @@ export const OverlayContainer = styled.div`
 
 export const Overlay = styled.div`
   position: absolute;
-  width: 200%;
+  width: 100%;
   height: 100%;
-  left: -100%;
-  background-color: #ff4b2b;
 `;
 
-type OverlayPanelType = {
-  right?: number;
-};
-export const OverlayPanel = styled.div<OverlayPanelType>`
+export const Card = styled.div`
+  position: relative;
+  width: 768px;
+  height: 480px;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4), 0 15px 25px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  backdrop-filter: blur(2px) brightness(60%) saturate(80%);
+  overflow: hidden;
+  &.active {
+    & #sign-in-container {
+      left: 50%;
+      transform: rotateY(0);
+    }
+    & #sign-up-container {
+      transform: rotateY(180deg);
+    }
+    & #panel-left {
+      opacity: 1;
+    }
+    & #panel-right {
+      opacity: 0;
+    }
+  }
+`;
+
+export const OverlayPanel = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -122,6 +148,8 @@ export const OverlayPanel = styled.div<OverlayPanelType>`
   color: white;
   padding: 0 40px;
   text-align: center;
+  box-sizing: border-box;
+  transition: opacity 0.8s;
   & button {
     background-color: transparent;
     border: 1px solid white;
@@ -130,6 +158,11 @@ export const OverlayPanel = styled.div<OverlayPanelType>`
     font-size: 12px;
     margin: 10px 0 15px 0;
   }
-  box-sizing: border-box;
-  right: ${(props) => props.right};
+  &#panel-right {
+    right: 0;
+    opacity: 1;
+  }
+  &#panel-left {
+    opacity: 0;
+  }
 `;

@@ -16,16 +16,16 @@ type PropsType = {
 
 export default function (props: PropsType) {
   return (
-    <OverlayContainer className="overlay_container">
-      <Overlay className="overlay">
-        <OverlayPanel>
+    <OverlayContainer>
+      <Overlay>
+        <OverlayPanel id="panel-left">
           <h2>welcome back!</h2>
           <p>To keep connected with us please login with your personal info</p>
           <Button id="sign-in" onClick={() => props.handleActive('')}>
             sign in
           </Button>
         </OverlayPanel>
-        <OverlayPanel right={0}>
+        <OverlayPanel id="panel-right">
           <h2>hello friend!</h2>
           <p>Enter your personal details and start journey with us</p>
           <Button id="sign-up" onClick={() => props.handleActive('active')}>

@@ -8,17 +8,15 @@ export default function () {
   const [active, setActive] = useState<string>('');
 
   const handleActive = (value: string) => {
-    console.log('=> handle active');
-
     setActive(value);
   };
 
   return (
     <Container>
       <Card className={active}>
+        <Overlay handleActive={handleActive} />
         <Register />
         <Login />
-        <Overlay handleActive={handleActive} />
       </Card>
     </Container>
   );
