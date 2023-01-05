@@ -1,11 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Container from './Index/Container';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './router';
+import Store from './store';
 import GlobalStyle from './style';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <GlobalStyle />
-    <Container />
+    <Store>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </Store>
   </React.StrictMode>,
 );

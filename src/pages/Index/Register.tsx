@@ -1,13 +1,14 @@
 import { ChangeEvent, useState } from 'react';
+import http from '../../utils/http';
 import { FormContainer, Form, Input, Button } from './style';
 
 export default function Register() {
   type registerFormType = {
-    username: string;
+    name: string;
     email: string;
     password: string;
   };
-  const [registerForm, setRegisterForm] = useState<registerFormType>({ username: '', email: '', password: '' });
+  const [registerForm, setRegisterForm] = useState<registerFormType>({ name: '', email: '', password: '' });
 
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -19,6 +20,13 @@ export default function Register() {
 
   const handleSignUp = () => {
     console.log('=> registerForm', registerForm);
+    http('post', '/api/user/register', registerForm).then((res) => {
+      if (res.code === 0) {
+        setRegisterForm({ name: '', email: '', password: '' });
+      } else {
+        alert(res.message);
+      }
+    });
   };
 
   return (
@@ -27,9 +35,9 @@ export default function Register() {
         <h2>sign up</h2>
         <Input
           type="text"
-          name="username"
+          name="name"
           id="r-username"
-          value={registerForm.username}
+          value={registerForm.name}
           onChange={handleFormChange}
           placeholder="Username..."
         />

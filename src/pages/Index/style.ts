@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import wallhaven from '../assets/wallhaven.png';
-import wallhaven1 from '../assets/wallhaven1.jpg';
+import wallhaven from '@/assets/wallhaven.png';
+import wallhaven1 from '@/assets/wallhaven1.jpg';
 
 type ContainerType = {
   background?: string;
@@ -110,6 +110,33 @@ export const Overlay = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+`;
+
+export const WelcomeContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  color: #ffffff;
+  font-size: 28px;
+`;
+
+export const TextContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 40px;
+  text-align: center;
+`;
+
+export const NavigateLink = styled.div`
+  position: absolute;
+  font-size: 16px;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%);
 `;
 
 export const Card = styled.div`
