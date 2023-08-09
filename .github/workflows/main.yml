@@ -38,5 +38,5 @@ jobs:
           SOURCE: dist/
           REMOTE_HOST: ${{ secrets.SERVER_HOST }}
           REMOTE_USER: ${{ secrets.SERVER_USER }}
-          TARGET: ${{ secrets.SERVER_PROJECT_TARGET }}
+          TARGET: ${{ secrets.SERVER_ROOT }}/cas
           EXCLUDE: '/dist, /node_modules, /build'
