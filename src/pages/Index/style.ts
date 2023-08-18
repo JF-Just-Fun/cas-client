@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import wallhaven from '@/assets/wallhaven.png';
-import wallhaven1 from '@/assets/wallhaven1.jpg';
+import wallhaven from '@/assets/wallhaven.jpg';
 
 type ContainerType = {
   background?: string;
@@ -19,7 +18,7 @@ export const Container = styled.div<ContainerType>`
     left: 0;
     top: 0;
     filter: blur(2px) saturate(90%) opacity(90%);
-    background-image: url(${wallhaven1});
+    background-image: url(${wallhaven});
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;

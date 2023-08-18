@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
-import * as React from 'react';
 
 axios.defaults.timeout = 20000;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * http request 拦截器

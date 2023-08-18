@@ -20,7 +20,7 @@ export default function Register() {
 
   const handleSignUp = () => {
     console.log('=> registerForm', registerForm);
-    http('post', '/api/user/register', registerForm).then((res) => {
+    http('post', '/user/register', registerForm).then((res) => {
       if (res.code === 0) {
         setRegisterForm({ name: '', email: '', password: '' });
       } else {

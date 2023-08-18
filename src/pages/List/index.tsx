@@ -1,6 +1,7 @@
 import { contextUser } from '../../store';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Container, FormContainer } from './style';
 
 export default function () {
   const { userStore } = useContext(contextUser);
@@ -15,8 +16,10 @@ export default function () {
   if (!userStore.manager) return null;
 
   return (
-    <>
-      <h1>List Page</h1>
-    </>
+    <Container>
+      <FormContainer>
+        <h1>List Page</h1>
+      </FormContainer>
+    </Container>
   );
 }

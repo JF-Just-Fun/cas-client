@@ -11,7 +11,6 @@ export default function () {
   const [active, setActive] = useState<string>('');
   const { userStore } = useContext(contextUser);
 
-  console.log('=> index', userStore);
   const handleActive = (value: string) => {
     setActive(value);
   };
@@ -19,7 +18,7 @@ export default function () {
   return (
     <Container>
       <Card className={active}>
-        {userStore.account_id ? (
+        {userStore.unId ? (
           <Welcome />
         ) : (
           <>

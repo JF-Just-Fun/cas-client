@@ -7,14 +7,14 @@ type initStateType = {
   email?: string;
   age?: number;
   manager?: boolean;
-  account_id?: string;
+  unId?: string;
   avatar?: string;
   timestamp?: number;
 };
 const initState: initStateType = {
   name: '',
   email: '',
-  account_id: '',
+  unId: '',
   avatar: '',
 };
 
@@ -50,8 +50,7 @@ export default function (props: any) {
   const [userStore, dispatchUserStore] = useReducer(reducerFn, initState);
 
   useEffect(() => {
-    http('get', '/api/user/profile').then((res) => {
-      console.log('=> store', res);
+    http('get', '/user/profile').then((res) => {
       if (res.code === 0) {
         dispatchUserStore({ type: ACTION_TYPE.UPDATE_USER, payload: res.data });
       }

@@ -21,7 +21,7 @@ export default function Login() {
   };
 
   const handleSignIn = () => {
-    http('post', '/api/user/login', loginForm).then((res) => {
+    http('post', '/user/login', loginForm).then((res) => {
       if (res.code === 0) {
         setLoginForm({ email: '', password: '' });
         dispatchUserStore!({ type: ACTION_TYPE.UPDATE_USER, payload: res.data });
