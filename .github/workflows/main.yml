@@ -29,6 +29,7 @@ jobs:
         run: |
           npm ci
           npm run build
+          cp -r ./dist/* cas/
 
       - name: copy file via ssh key
         uses: appleboy/scp-action@v0.1.4
@@ -37,7 +38,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           port: ${{ secrets.SERVER_SSH_PORT }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          source: './dist/*'
-          target: ${{ secrets.SERVER_ROOT }}/cas
+          source: './cas'
+          target: ${{ secrets.SERVER_ROOT }}
           rm: true
           overwrite: true
