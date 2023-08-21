@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 
 axios.defaults.timeout = 20000;
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+axios.defaults.withCredentials = true;
 
 /**
  * http request 拦截器
