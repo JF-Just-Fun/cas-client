@@ -6,7 +6,7 @@ export default function Router() {
   return (
     <Routes>
       <Route path="/list" element={<List />} />
-      <Route path="/" element={<Index />} />
+      <Route path="*" element={<Index />} />
     </Routes>
   );
 }

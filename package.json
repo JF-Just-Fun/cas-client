@@ -1,12 +1,12 @@
 {
-  "name": "-asd",
+  "name": "cas-client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "prepare": "husky install",
     "dev": "vite --mode development",
-    "build": "vite build",
+    "build": "vite build --mode production",
     "preview": "vite preview"
   },
   "dependencies": {
