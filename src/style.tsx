@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 export default createGlobalStyle`
 html {
   width: 100%;
+  min-width: 1200px;
   height: 100%;
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
@@ -10,13 +11,14 @@ html {
 
 body {
   margin: 0;
-  width: 100%;
+  min-width: 1200px;
   height: 100%;
 }
 
 #root{
-  width: 100%;
+  min-width: 1200px;
   height: 100%;
+  position: relative;
 }
 
 main {

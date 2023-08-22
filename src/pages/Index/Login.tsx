@@ -1,7 +1,6 @@
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, ForwardedRef, useContext, useState } from 'react';
 import { FormContainer, Form, Input, ForgetPassword, Button } from './style';
 import http from '../../utils/http';
-import { useNavigate } from 'react-router-dom';
 import { contextUser, ACTION_TYPE } from '../../store';
 
 export default function Login() {
@@ -10,7 +9,7 @@ export default function Login() {
     password: string;
   };
   const [loginForm, setLoginForm] = useState<loginFormType>({ email: '', password: '' });
-  const { dispatchUserStore } = useContext(contextUser);
+  const { dispatchUserStore, userStore } = useContext(contextUser);
 
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -25,6 +24,8 @@ export default function Login() {
       if (res.code === 0) {
         setLoginForm({ email: '', password: '' });
         dispatchUserStore!({ type: ACTION_TYPE.UPDATE_USER, payload: res.data });
+      } else {
+        userStore?.showAlert && userStore?.showAlert(res.message);
       }
     });
   };

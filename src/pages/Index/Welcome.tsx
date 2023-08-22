@@ -11,8 +11,8 @@ export default function (props: PropsType) {
   return (
     <OverlayContainer>
       <WelcomeContainer>
-        <TextContainer>欢迎登录，{userStore.name}</TextContainer>
-        <NavigateLink>{userStore.manager && <Link to="/list">授权列表</Link>}</NavigateLink>
+        <TextContainer>欢迎登录，{userStore?.name}</TextContainer>
+        <NavigateLink>{userStore?.manager && <Link to="/apps/list">授权列表</Link>}</NavigateLink>
       </WelcomeContainer>
     </OverlayContainer>
   );

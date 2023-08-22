@@ -1,6 +1,7 @@
-import { useContext, useReducer, createContext, useEffect } from 'react';
+import { useReducer, createContext, useEffect } from 'react';
 import type { Dispatch } from 'react';
 import http from './utils/http';
+import useAlert from './pages/Alert';
 
 type initStateType = {
   name?: string;
@@ -10,6 +11,7 @@ type initStateType = {
   unId?: string;
   avatar?: string;
   timestamp?: number;
+  showAlert?: (val: string) => void;
 };
 const initState: initStateType = {
   name: '',
@@ -39,15 +41,19 @@ const reducerFn = (state: initStateType, action: any) => {
 };
 
 type contextUserType = {
-  userStore: initStateType;
+  userStore?: initStateType;
   dispatchUserStore?: Dispatch<actionType>;
 };
-export const contextUser = createContext<contextUserType>({ userStore: initState });
+export const contextUser = createContext<contextUserType>({});
 
 export default function (props: any) {
   const { children } = props;
   const { Provider } = contextUser;
-  const [userStore, dispatchUserStore] = useReducer(reducerFn, initState);
+  const { showAlert, AlertMessage } = useAlert();
+  const [userStore, dispatchUserStore] = useReducer(reducerFn, {
+    ...initState,
+    showAlert,
+  });
 
   useEffect(() => {
     http('get', '/user/profile').then((res) => {
@@ -57,5 +63,10 @@ export default function (props: any) {
     });
   }, []);
 
-  return <Provider value={{ userStore, dispatchUserStore }}>{children}</Provider>;
+  return (
+    <Provider value={{ userStore, dispatchUserStore }}>
+      <AlertMessage />
+      {children}
+    </Provider>
+  );
 }

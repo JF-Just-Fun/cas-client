@@ -8,7 +8,7 @@ import { Card, Container } from './style';
 import Welcome from './Welcome';
 
 export default function () {
-  const [active, setActive] = useState<string>('');
+  const [active, setActive] = useState<string>('active');
   const { userStore } = useContext(contextUser);
 
   const handleActive = (value: string) => {
@@ -18,7 +18,7 @@ export default function () {
   return (
     <Container>
       <Card className={active}>
-        {userStore.unId ? (
+        {userStore?.unId ? (
           <Welcome />
         ) : (
           <>
