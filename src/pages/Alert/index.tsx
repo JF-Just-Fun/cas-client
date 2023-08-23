@@ -1,5 +1,5 @@
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 import { createPortal } from 'react-dom';
 import { forwardRef, useState } from 'react';
 
@@ -9,6 +9,7 @@ export default function useAlert() {
   const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
+  const [severity, setSeverity] = useState<AlertColor>('error');
 
   const AlertMessage = () => {
     return createPortal(
@@ -18,13 +19,16 @@ export default function useAlert() {
         onClose={() => setOpen(false)}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
       >
-        <Alert severity="error">{alertContent}</Alert>
+        <Alert severity={severity}>{alertContent}</Alert>
       </Snackbar>,
       window.document.body,
     );
   };
 
-  const showAlert = (val: string) => {
+  const showAlert = (val: string, type?: AlertColor) => {
+    if (type) {
+      setSeverity(type);
+    }
     setAlertContent(val);
     setOpen(true);
   };

@@ -1,23 +1,25 @@
-import { useReducer, createContext, useEffect } from 'react';
+import { useReducer, createContext, useEffect, useContext } from 'react';
 import type { Dispatch } from 'react';
 import http from './utils/http';
 import useAlert from './pages/Alert';
+import { AlertColor } from '@mui/material/Alert';
 
 type initStateType = {
-  name?: string;
-  email?: string;
+  name: string;
+  email: string;
   age?: number;
   manager?: boolean;
-  unId?: string;
-  avatar?: string;
+  unId: string;
+  avatar: string;
   timestamp?: number;
-  showAlert?: (val: string) => void;
+  showAlert: (val: string, type?: AlertColor) => void;
 };
 const initState: initStateType = {
   name: '',
   email: '',
   unId: '',
   avatar: '',
+  showAlert: () => {},
 };
 
 export enum ACTION_TYPE {
@@ -35,23 +37,24 @@ const reducerFn = (state: initStateType, action: any) => {
     case ACTION_TYPE.RESET_USER:
       return { ...initState };
     case ACTION_TYPE.UPDATE_USER:
-      return payload;
+      return { ...state, ...payload };
   }
   return state;
 };
 
 type contextUserType = {
-  userStore?: initStateType;
+  userStore: initStateType;
   dispatchUserStore?: Dispatch<actionType>;
 };
-export const contextUser = createContext<contextUserType>({});
+export const contextUser = createContext<contextUserType>({ userStore: initState });
 
 export default function (props: any) {
   const { children } = props;
   const { Provider } = contextUser;
   const { showAlert, AlertMessage } = useAlert();
+  const userStoreContext = useContext(contextUser);
   const [userStore, dispatchUserStore] = useReducer(reducerFn, {
-    ...initState,
+    ...userStoreContext,
     showAlert,
   });
 

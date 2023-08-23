@@ -12,7 +12,9 @@
   "dependencies": {
     "@mui/material": "^5.14.5",
     "@mui/styled-engine-sc": "^5.12.0",
+    "@mui/x-date-pickers": "^6.11.2",
     "axios": "^1.2.2",
+    "dayjs": "^1.11.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.1",
@@ -29,6 +31,7 @@
     "@vitejs/plugin-react": "^2.2.0",
     "husky": "^8.0.2",
     "prettier": "^2.8.0",
+    "rollup-plugin-terser": "^7.0.2",
     "typescript": "^4.6.4",
     "vite": "^3.2.3"
   }

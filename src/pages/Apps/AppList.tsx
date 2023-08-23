@@ -2,11 +2,11 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import Link from '@mui/material/Link';
-import { FormContainer, HeadCell, RegisterButton, TableHead } from './style';
+import { FormContainer, HeadCell, Link, RegisterButton, TableHead } from './style';
 import http from '../../utils/http';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { contextUser } from '../../store';
 
 export type AppListType = Array<{
   name: string;
@@ -18,6 +18,7 @@ export type AppListType = Array<{
 
 export default function AppList() {
   const navigate = useNavigate();
+  const { userStore } = useContext(contextUser);
 
   const mockList = [
     { name: 'app4', token: '34dfgsd', domain: 'yinpo.space', desc: 'this is desc...', expire: '', status: false },
@@ -41,8 +42,24 @@ export default function AppList() {
     });
   }, []);
 
+  const handleDelete = (token: string) => {
+    http('delete', '/application/remove', { token }).then((res) => {
+      if (res.code === 0) {
+        setList((prev) => {
+          return prev?.filter((item) => item.token !== token);
+        });
+      } else {
+        userStore.showAlert(res.message);
+      }
+    });
+  };
+
+  const handleEdit = (token: string) => {
+    navigate(`/apps/edit/${token}`);
+  };
+
   return (
-    <FormContainer>
+    <>
       <Table>
         <TableHead>
           <TableRow className="table-row">
@@ -69,7 +86,8 @@ export default function AppList() {
               <TableCell>{item.desc}</TableCell>
               <TableCell>{item.expire || '-'}</TableCell>
               <TableCell align="center">
-                <Link href="#">Edit</Link>&ensp;<Link href="#">Del</Link>
+                <Link onClick={() => handleEdit(item.token)}>Edit</Link>&ensp;
+                <Link onClick={() => handleDelete(item.token)}>Del</Link>
               </TableCell>
             </TableRow>
           ))}
@@ -78,6 +96,6 @@ export default function AppList() {
       <RegisterButton variant="contained" disableRipple onClick={() => navigate('/apps/register')}>
         register new application
       </RegisterButton>
-    </FormContainer>
+    </>
   );
 }

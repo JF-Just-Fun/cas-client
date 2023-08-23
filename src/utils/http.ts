@@ -119,11 +119,24 @@ export function put(url: string, data = {}): Promise<any> {
 }
 
 //统一接口处理，返回数据
-type methodType = 'get' | 'post' | 'patch' | 'put';
-export default function (method: methodType, url: string, param: any = null) {
+type methodType = 'get' | 'post' | 'patch' | 'put' | 'delete';
+export default function (method: methodType | string, url: string, param: any = null) {
   switch (method) {
     case 'get':
       return get(url, param);
+    case 'delete':
+      return new Promise((resolve, reject) => {
+        return axios
+          .delete(url, {
+            params: param,
+          })
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     case 'post':
       return post(url, param);
     case 'put':
@@ -131,6 +144,11 @@ export default function (method: methodType, url: string, param: any = null) {
     case 'patch':
       return post(url, param);
   }
+  return axios.request({
+    url: url,
+    method: method,
+    data: param,
+  });
 }
 
 //失败提示

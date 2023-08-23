@@ -10,7 +10,7 @@ export default function () {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === '/apps') {
+    if (location.pathname === '/apps' || location.pathname === '/apps/') {
       navigate('/apps/list');
     }
 
