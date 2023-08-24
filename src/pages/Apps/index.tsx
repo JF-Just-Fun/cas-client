@@ -15,19 +15,19 @@ export default function () {
     }
 
     const timer = setTimeout(() => {
-      if (!userStore?.unId && !userStore?.manager) {
+      if (!userStore?.unId || !userStore?.manager) {
         navigate('/');
       }
     }, 3000);
     return () => {
       clearTimeout(timer);
     };
-  }, [userStore]);
+  }, [userStore.unId]);
 
   return (
     <Container>
       <FormContainer>
-        {!userStore?.unId && !userStore?.manager ? <h1>no user info, please login again!</h1> : <Outlet />}
+        {!userStore?.unId || !userStore?.manager ? <h1>no user info, please login again!</h1> : <Outlet />}
       </FormContainer>
     </Container>
   );

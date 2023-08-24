@@ -127,9 +127,7 @@ export default function (method: methodType | string, url: string, param: any = 
     case 'delete':
       return new Promise((resolve, reject) => {
         return axios
-          .delete(url, {
-            params: param,
-          })
+          .delete(url, param)
           .then((response) => {
             resolve(response.data);
           })
@@ -140,7 +138,16 @@ export default function (method: methodType | string, url: string, param: any = 
     case 'post':
       return post(url, param);
     case 'put':
-      return post(url, param);
+      return new Promise((resolve, reject) => {
+        return axios
+          .put(url, param)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     case 'patch':
       return post(url, param);
   }

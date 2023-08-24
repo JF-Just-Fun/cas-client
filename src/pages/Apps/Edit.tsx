@@ -48,10 +48,10 @@ export default function Edit() {
       return;
     }
 
-    // 提交表单到后端接口/api/application/register
-    http('post', '/application/register', formData).then((res) => {
+    // 提交表单到后端接口/api/application/update
+    http('put', '/application/update', { ...formData, token }).then((res) => {
       if (res.code === 0) {
-        userStore.showAlert(`application ${formData.name} register success!`, 'success');
+        userStore.showAlert(`application ${formData.name} update success!`, 'success');
         navigate('/apps/list');
       } else {
         userStore.showAlert(res.message);

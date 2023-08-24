@@ -7,7 +7,7 @@ export type FormDataType = {
   name?: string;
   domain?: string;
   desc?: string;
-  expire?: string;
+  expire: number;
 };
 
 export type propsType = {
@@ -16,7 +16,7 @@ export type propsType = {
 };
 
 export default function Register(props: propsType) {
-  const updateFormData = (key: string, value: string) => {
+  const updateFormData = (key: string, value: string | number) => {
     props.setFormData((prev) => ({
       ...prev,
       [key]: value,
@@ -63,7 +63,7 @@ export default function Register(props: propsType) {
         <DatePicker
           label="Expire"
           format="YYYY-MM-DD"
-          onAccept={(value) => updateFormData('expire', dayjs(value as Date).format('YYYY-MM-DD'))}
+          onAccept={(value) => updateFormData('expire', dayjs(value as Date).valueOf())}
         />
       </LocalizationProvider>
     </>

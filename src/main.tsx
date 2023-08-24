@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Router from './router';
 import Store from './store';
 import GlobalStyle from './style';
+import User from './pages/User';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
