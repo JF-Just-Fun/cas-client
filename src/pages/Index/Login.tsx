@@ -20,6 +20,10 @@ export default function Login() {
   };
 
   const handleSignIn = () => {
+    if (!loginForm.email || !loginForm.password) {
+      userStore.showAlert('email and password cannot be empty');
+      return;
+    }
     http('post', '/user/login', loginForm).then((res) => {
       if (res.code === 0) {
         setLoginForm({ email: '', password: '' });
