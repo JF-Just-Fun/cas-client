@@ -1,6 +1,7 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import http from '../../utils/http';
 import { FormContainer, Form, Input, Button } from './style';
+import { contextUser } from '../../store';
 
 export default function Register() {
   type registerFormType = {
@@ -9,6 +10,7 @@ export default function Register() {
     password: string;
   };
   const [registerForm, setRegisterForm] = useState<registerFormType>({ name: '', email: '', password: '' });
+  const { userStore } = useContext(contextUser);
 
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -24,7 +26,7 @@ export default function Register() {
       if (res.code === 0) {
         setRegisterForm({ name: '', email: '', password: '' });
       } else {
-        alert(res.message);
+        userStore.showAlert(res.message);
       }
     });
   };
