@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import { contextUser } from '../../store';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Dropdown, Menu, MenuButton, MenuItem, PopContainer } from './style';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,11 @@ export default function (props: PropsType) {
   const { userStore } = useContext(contextUser);
   const navigate = useNavigate();
 
+  const logOut = () => {
+    userStore.logout();
+    navigate('/');
+  };
+
   return createPortal(
     <PopContainer>
       <Dropdown>
@@ -19,7 +24,7 @@ export default function (props: PropsType) {
           <MenuItem onClick={() => navigate('/apps')}>Manage</MenuItem>
           <MenuItem onClick={() => navigate('/user/profile')}>Profile</MenuItem>
           <MenuItem onClick={() => navigate('/user/settings')}>Settings</MenuItem>
-          <MenuItem onClick={userStore.logout}>Log out</MenuItem>
+          <MenuItem onClick={logOut}>Log out</MenuItem>
         </Menu>
       </Dropdown>
     </PopContainer>,

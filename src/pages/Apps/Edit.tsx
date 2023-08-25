@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import Form from './Form';
 import type { FormDataType } from './Form';
 import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 export default function Edit() {
   // 使用userStore中的showAlert方法
@@ -19,7 +20,7 @@ export default function Edit() {
     name: '',
     domain: '',
     desc: '',
-    expire: '',
+    expire: 0,
   });
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function Edit() {
             name: res.data[0].name,
             domain: res.data[0].domain,
             desc: res.data[0].desc,
-            expire: res.data[0].expire,
+            expire: dayjs(res.data[0].expire).valueOf(),
           });
         } else {
           userStore.showAlert(res.message);

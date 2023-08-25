@@ -7,27 +7,28 @@ import { AlertColor } from '@mui/material/Alert';
 type initStateType = {
   name: string;
   email: string;
-  age?: number;
-  manager?: boolean;
+  manager: boolean;
   unId: string;
   avatar: string;
-  gender?: string;
-  birth?: string;
-  phone?: string;
-  timestamp?: number;
-  showAlert: (val: string, type?: AlertColor) => void;
+  gender: string;
+  birth: string;
+  phone: string;
+  isLoading: boolean;
+  showAlert: (val: string, type?: AlertColor | undefined) => void;
   logout: () => void;
   profile: () => void;
 };
 const initState: initStateType = {
   name: '',
   email: '',
+  manager: false,
   unId: '',
   avatar: '',
   gender: '',
   birth: '',
   phone: '',
-  showAlert: () => {},
+  isLoading: true,
+  showAlert: (val) => {},
   logout: () => {},
   profile: () => {},
 };
@@ -35,27 +36,27 @@ const initState: initStateType = {
 export enum ACTION_TYPE {
   UPDATE_USER = 'update_user_info',
   RESET_USER = 'reset_user_info',
+  SET_LOADING = 'set_loading',
 }
 
-type actionType = {
-  payload: any;
-  type: string;
-};
-const reducerFn = (state: initStateType, action: any) => {
-  const { payload, type } = action;
-  switch (type) {
-    case ACTION_TYPE.RESET_USER:
-      return { ...state, name: '', email: '', unId: '', avatar: '' };
-    case ACTION_TYPE.UPDATE_USER:
-      return { ...state, ...payload };
-  }
-  return state;
+type GlobalFnType = {
+  showAlert: (val: string, type?: AlertColor | undefined) => void;
+  logout: () => void;
+  profile: () => void;
 };
 
+type ReducerInitialStateType = GlobalFnType & initStateType;
+
+interface ActionType {
+  payload?: Partial<ReducerInitialStateType>;
+  type: ACTION_TYPE;
+}
+
 type contextUserType = {
-  userStore: initStateType;
-  dispatchUserStore?: Dispatch<actionType>;
+  userStore: ReducerInitialStateType;
+  dispatchUserStore?: Dispatch<ActionType>;
 };
+
 export const contextUser = createContext<contextUserType>({ userStore: initState });
 
 export default function (props: any) {
@@ -63,13 +64,28 @@ export default function (props: any) {
   const { Provider } = contextUser;
   const { showAlert, AlertMessage } = useAlert();
   const userStoreContext = useContext(contextUser);
-  const [userStore, dispatchUserStore] = useReducer(reducerFn, {
-    ...userStoreContext,
+
+  const reducerFn = (state: ReducerInitialStateType, action: ActionType): ReducerInitialStateType => {
+    const { payload, type } = action;
+    switch (type) {
+      case ACTION_TYPE.RESET_USER:
+        return { ...state, name: '', email: '', unId: '', avatar: '' };
+      case ACTION_TYPE.UPDATE_USER:
+        return { ...state, ...payload };
+      case ACTION_TYPE.SET_LOADING:
+        return { ...state, isLoading: payload?.isLoading ?? false };
+    }
+    return state;
+  };
+
+  const initializerArg: ReducerInitialStateType = {
+    ...userStoreContext.userStore,
     showAlert,
     logout: () => {
       http('delete', '/user/logout').then((res) => {
         if (res.code === 0) {
           dispatchUserStore({ type: ACTION_TYPE.RESET_USER });
+          dispatchUserStore({ type: ACTION_TYPE.SET_LOADING, payload: { isLoading: true } });
         }
       });
     },
@@ -77,10 +93,13 @@ export default function (props: any) {
       http('get', '/user/profile').then((res) => {
         if (res.code === 0) {
           dispatchUserStore({ type: ACTION_TYPE.UPDATE_USER, payload: res.data });
+          dispatchUserStore({ type: ACTION_TYPE.SET_LOADING, payload: { isLoading: true } });
         }
       });
     },
-  });
+  };
+
+  const [userStore, dispatchUserStore] = useReducer(reducerFn, initializerArg);
 
   useEffect(() => {
     userStore.profile();

@@ -15,7 +15,7 @@ export default function Register() {
     name: '',
     domain: '',
     desc: '',
-    expire: '',
+    expire: 0,
   });
 
   const handleRegister = () => {

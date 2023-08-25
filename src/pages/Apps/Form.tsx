@@ -63,6 +63,7 @@ export default function Register(props: propsType) {
         <DatePicker
           label="Expire"
           format="YYYY-MM-DD"
+          value={dayjs(new Date(props.formData.expire))}
           onAccept={(value) => updateFormData('expire', dayjs(value as Date).valueOf())}
         />
       </LocalizationProvider>

@@ -25,7 +25,7 @@ export default function Login() {
         setLoginForm({ email: '', password: '' });
         dispatchUserStore!({ type: ACTION_TYPE.UPDATE_USER, payload: res.data });
       } else {
-        userStore?.showAlert && userStore?.showAlert(res.message);
+        userStore.showAlert(res.message);
       }
     });
   };
