@@ -21,7 +21,10 @@ export default function (props: PropsType) {
       <Dropdown>
         <MenuButton>{userStore.name}</MenuButton>
         <Menu>
-          <MenuItem onClick={() => navigate('/apps')}>Manage</MenuItem>
+          {
+            // 如果是管理员，显示管理应用的选项
+            userStore.manager && <MenuItem onClick={() => navigate('/apps')}>Manage</MenuItem>
+          }
           <MenuItem onClick={() => navigate('/user/profile')}>Profile</MenuItem>
           <MenuItem onClick={() => navigate('/user/settings')}>Settings</MenuItem>
           <MenuItem onClick={logOut}>Log out</MenuItem>

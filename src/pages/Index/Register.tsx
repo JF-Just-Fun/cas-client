@@ -1,7 +1,12 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import http from '../../utils/http';
 import { FormContainer, Form, Input, Button } from './style';
-import { contextUser } from '../../store';
+import { ACTION_TYPE, contextUser } from '../../store';
+
+type loginFormType = {
+  email: string;
+  password: string;
+};
 
 export default function Register() {
   type registerFormType = {
@@ -10,7 +15,7 @@ export default function Register() {
     password: string;
   };
   const [registerForm, setRegisterForm] = useState<registerFormType>({ name: '', email: '', password: '' });
-  const { userStore } = useContext(contextUser);
+  const { userStore, dispatchUserStore } = useContext(contextUser);
 
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -20,11 +25,21 @@ export default function Register() {
     }));
   };
 
+  const handleSignIn = (loginForm: loginFormType) => {
+    http('post', '/user/login', loginForm).then((res) => {
+      if (res.code === 0) {
+        dispatchUserStore!({ type: ACTION_TYPE.UPDATE_USER, payload: res.data });
+      } else {
+        userStore.showAlert(res.message);
+      }
+    });
+  };
+
   const handleSignUp = () => {
-    console.log('=> registerForm', registerForm);
     http('post', '/user/register', registerForm).then((res) => {
       if (res.code === 0) {
         setRegisterForm({ name: '', email: '', password: '' });
+        handleSignIn({ email: registerForm.email, password: registerForm.password });
       } else {
         userStore.showAlert(res.message);
       }

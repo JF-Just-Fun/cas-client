@@ -60,22 +60,8 @@ export default function Router() {
             }
           />
         </Route>
-        <Route
-          path="/user/profile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/user/settings"
-          element={
-            <ProtectedRoute>
-              <UserSettings />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/user/profile" element={<UserProfile />} />
+        <Route path="/user/settings" element={<UserSettings />} />
         <Route path="*" element={<Index />} />
       </Routes>
     </BrowserRouter>
