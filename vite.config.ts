@@ -4,7 +4,7 @@ import { terser } from 'rollup-plugin-terser';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/cas' : './',
+  base: process.env.NODE_ENV === 'production' ? './' : './',
   resolve: {
     alias: {
       '@': '/src',
