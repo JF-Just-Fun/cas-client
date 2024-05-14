@@ -90,7 +90,11 @@ export default function (props: any) {
       });
     },
     profile: () => {
-      http('get', '/user/profile').then((res) => {
+      const url = window.location.search;
+      const regex = /callbackUrl=([^&]+)/;
+      const match = url.match(regex);
+      const callbackUrlParam = match && match[1];
+      http('get', '/user/profile',{callbackUrlParam}).then((res) => {
         if (res.code === 0) {
           dispatchUserStore({ type: ACTION_TYPE.UPDATE_USER, payload: res.data });
           dispatchUserStore({ type: ACTION_TYPE.SET_LOADING, payload: { isLoading: true } });
