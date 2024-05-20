@@ -1,0 +1,43 @@
+name: cas client
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [test]
+  pull_request:
+    branches: [test]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  client:
+    runs-on: ubuntu-latest
+    environment: 
+      name: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.15.0'
+
+      - name: Install npm dependencies and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: SSH Server Deploy
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          scp_source: ./dist/*
+          scp_target: /project/nginx_cas/html/

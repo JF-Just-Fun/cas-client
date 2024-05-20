@@ -4,7 +4,7 @@ import { terser } from 'rollup-plugin-terser';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/cas' : './',
+  base: process.env.NODE_ENV === 'production' ? './' : './',
   resolve: {
     alias: {
       '@': '/src',
@@ -12,11 +12,11 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3001,
     proxy: {
       '/api': {
-        target: 'https://api.yinpo.space/cas',
+        target: 'https://casapi.desiretree.top/',
         changeOrigin: true,
+        secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
