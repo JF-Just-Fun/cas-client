@@ -7,6 +7,7 @@ export default function Login() {
   type loginFormType = {
     email: string;
     password: string;
+    callbackUrlParam?: string;
   };
   const [loginForm, setLoginForm] = useState<loginFormType>({ email: '', password: '' });
   const { dispatchUserStore, userStore } = useContext(contextUser);
@@ -24,8 +25,19 @@ export default function Login() {
       userStore.showAlert('email and password cannot be empty');
       return;
     }
+    const url = window.location.search;
+    const regex = /callbackUrl=([^&]+)/;
+    const match = url.match(regex);
+    const callbackUrlParam = match && match[1];
+    if(callbackUrlParam){
+      loginForm.callbackUrlParam = callbackUrlParam
+    }
     http('post', '/user/login', loginForm).then((res) => {
       if (res.code === 0) {
+        console.log(res);
+        if(res.callbackUrl!==''){
+          window.location.href = res.callbackUrl
+        }
         setLoginForm({ email: '', password: '' });
         dispatchUserStore!({ type: ACTION_TYPE.UPDATE_USER, payload: res.data });
       } else {
